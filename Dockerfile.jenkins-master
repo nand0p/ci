@@ -1,0 +1,15 @@
+FROM jenkins
+
+MAINTAINER Fernando Jose Pando <nando@hex7.com>
+
+USER root
+
+#ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get -y install libmysqlclient-dev libpq-dev gcc python-dev libldap2-dev libsasl2-dev make g++
+RUN curl https://bootstrap.pypa.io/get-pip.py | python 
+RUN pip install awscli virtualenv
+RUN wget https://releases.hashicorp.com/terraform/0.7.7/terraform_0.7.7_linux_amd64.zip && \
+    unzip terraform_0.7.7_linux_amd64.zip -d /usr/local/bin                            
+
+USER jenkins
