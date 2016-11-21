@@ -7,7 +7,7 @@ USER root
 RUN apt-get update && apt-get -y install libmysqlclient-dev libpq-dev gcc python-dev libldap2-dev libsasl2-dev make g++
 RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
 RUN pip install awscli virtualenv
-RUN wget https://releases.hashicorp.com/terraform/0.7.10/terraform_0.7.10_linux_amd64.zip && \
-    unzip terraform_0.7.10_linux_amd64.zip -d /usr/local/bin
+RUN wget https://releases.hashicorp.com/terraform/0.7.11/terraform_0.7.11_linux_amd64.zip && \
+    unzip terraform_0.7.11_linux_amd64.zip -d /usr/local/bin
 
 USER jenkins
