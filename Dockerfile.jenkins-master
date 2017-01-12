@@ -4,10 +4,27 @@ MAINTAINER Fernando Jose Pando <nando@hex7.com>
 
 USER root
 
-RUN apt-get update && apt-get -y install libmysqlclient-dev libpq-dev gcc python-dev libldap2-dev libsasl2-dev make g++
-RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py
-RUN pip install awscli virtualenv
+RUN echo "deb http://download.virtualbox.org/virtualbox/debian jessie contrib" | \
+    tee -a /etc/apt/sources.list
+
+RUN apt-get update && apt-get -y --force-yes install \
+    libmysqlclient-dev \
+    libpq-dev \
+    gcc \
+    python-dev \
+    libldap2-dev \
+    libsasl2-dev \
+    make \
+    g++ \
+    virtualbox-5.0
+
+RUN curl https://bootstrap.pypa.io/get-pip.py | python && \
+    pip install awscli virtualenv
 RUN wget https://releases.hashicorp.com/terraform/0.7.11/terraform_0.7.11_linux_amd64.zip && \
-    unzip terraform_0.7.11_linux_amd64.zip -d /usr/local/bin
+    wget https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.deb && \
+    unzip terraform_0.7.7_linux_amd64.zip -d /usr/local/bin && \
+    dpkg -i vagrant_1.9.1_x86_64.deb
 
 USER jenkins
+
+RUN vagrant box add centos/7 --provider virtualbox
