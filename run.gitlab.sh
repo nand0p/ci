@@ -3,7 +3,7 @@
 docker stop gitlab
 docker rm gitlab
 
-docker build . -f Dockerfile.gitlab -t nand0p/gitlab
+docker build docker_gitlab -t nand0p/gitlab
 docker push nand0p/gitlab
 
 docker run -d -v /etc/gitlab:/etc/gitlab -v /var/opt/gitlab:/var/opt/gitlab \

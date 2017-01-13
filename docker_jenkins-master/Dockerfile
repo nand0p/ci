@@ -16,13 +16,14 @@ RUN apt-get update && apt-get -y --force-yes install \
     libsasl2-dev \
     make \
     g++ \
+    time \
     virtualbox-5.0
 
 RUN curl https://bootstrap.pypa.io/get-pip.py | python && \
     pip install awscli virtualenv
-RUN wget https://releases.hashicorp.com/terraform/0.7.11/terraform_0.7.11_linux_amd64.zip && \
+RUN wget https://releases.hashicorp.com/terraform/0.8.4/terraform_0.8.4_linux_amd64.zip && \
     wget https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.deb && \
-    unzip terraform_0.7.7_linux_amd64.zip -d /usr/local/bin && \
+    unzip terraform_0.8.4_linux_amd64.zip -d /usr/local/bin && \
     dpkg -i vagrant_1.9.1_x86_64.deb
 
 USER jenkins
