@@ -7,7 +7,7 @@ USER root
 RUN echo "deb http://download.virtualbox.org/virtualbox/debian jessie contrib" | \
     tee -a /etc/apt/sources.list
 
-RUN apt-get update && apt-get -y --force-yes install \
+RUN apt-get -y update && apt-get -y --force-yes install \
     libmysqlclient-dev \
     libpq-dev \
     gcc \
@@ -17,7 +17,8 @@ RUN apt-get update && apt-get -y --force-yes install \
     make \
     g++ \
     time \
-    virtualbox-5.0
+    virtualbox-5.0 && \
+    apt-get -y upgrade
 
 RUN curl https://bootstrap.pypa.io/get-pip.py | python && \
     pip install awscli virtualenv
