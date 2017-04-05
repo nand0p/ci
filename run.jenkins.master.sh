@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash -e
 
-docker stop jenkins-master
-docker rm jenkins-master
+
+docker stop jenkins-master || true
+docker rm jenkins-master || true
 
 docker build docker_jenkins-master -t nand0p/jenkins-master
 docker push nand0p/jenkins-master
