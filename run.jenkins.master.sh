@@ -10,4 +10,5 @@ docker run -d --privileged=true \
     --net=host \
     --volume /var/jenkins_home:/var/jenkins_home \
     --volume /dev/vboxdrv:/dev/vboxdrv \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
     --name jenkins-master nand0p/jenkins-master
