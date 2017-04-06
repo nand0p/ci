@@ -6,7 +6,7 @@ USER root
 
 RUN apt-get -y update && \
     apt-get -y install apt-utils && \
-    apt-get -y install wget module-init-tools linux-headers-4.9.0-0 libmysqlclient-dev libpq-dev gcc python-dev libldap2-dev libsasl2-dev make g++ time \
+    apt-get -y install netcat wget module-init-tools linux-headers-4.9.0-0 libmysqlclient-dev libpq-dev gcc python-dev libldap2-dev libsasl2-dev make g++ time \
         libqt5core5a libqt5gui5 libqt5opengl5 libqt5printsupport5 libqt5widgets5 libqt5x11extras5 libsdl1.2debian libvpx1 libxmu6 apparmor && \
     wget --no-verbose -O /tmp/virtualbox-5.1.deb http://download.virtualbox.org/virtualbox/5.1.18/virtualbox-5.1_5.1.18-114002~Debian~jessie_amd64.deb && \
     dpkg -i /tmp/virtualbox-5.1.deb && \
