@@ -8,16 +8,18 @@ RUN yum -y install openssl-devel python-devel java-1.7.0-openjdk which unzip wge
     wget --no-verbose -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo && \
     rpm -v --import https://jenkins-ci.org/redhat/jenkins-ci.org.key && \
     yum -y install jenkins VirtualBox-5.1 && \
-    wget --no-verbose -O /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.9.2/terraform_0.9.2_linux_amd64.zip && \
-    unzip /tmp/terraform.zip -d /usr/local/bin && \
-    wget --no-verbose -O /tmp/install-docker.sh https://get.docker.com/ && \
-    bash /tmp/install-docker.sh && \
-    usermod -aG vboxusers,docker jenkins && \
-    wget --no-verbose -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    python /tmp/get-pip.py && \
+    wget --no-verbose -O /root/terraform.zip https://releases.hashicorp.com/terraform/0.9.2/terraform_0.9.2_linux_amd64.zip && \
+    unzip /root/terraform.zip -d /usr/local/bin && \
+    wget --no-verbose -O /root/packer.zip https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip && \
+    unzip /root/packer.zip -d /usr/local/bin && \
+    wget --no-verbose -O /root/install-docker.sh https://get.docker.com/ && \
+    bash /root/install-docker.sh && \
+    wget --no-verbose -O /root/vagrant.rpm https://releases.hashicorp.com/vagrant/1.9.3/vagrant_1.9.3_x86_64.rpm && \
+    rpm -Uvh /root/vagrant.rpm && \
+    wget --no-verbose -O /root/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+    python /root/get-pip.py && \
     pip install awscli virtualenv ansible && \
-    wget --no-verbose -O /tmp/vagrant.rpm https://releases.hashicorp.com/vagrant/1.9.3/vagrant_1.9.3_x86_64.rpm && \
-    rpm -Uvh /tmp/vagrant.rpm && \
+    usermod -aG vboxusers,docker jenkins && \
     mkdir -m 0755 /nix && chown jenkins /nix && \
     chown -c jenkins /var/lib/jenkins && \
     chsh -s /bin/bash jenkins
