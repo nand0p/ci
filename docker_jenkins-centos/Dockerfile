@@ -8,7 +8,7 @@ RUN yum -y groupinstall 'Development Tools' && \
     wget --no-verbose -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo && \
     rpm -v --import https://jenkins-ci.org/redhat/jenkins-ci.org.key && \
     yum -y install jenkins VirtualBox-5.1 && \
-    wget --no-verbose -O /root/terraform.zip https://releases.hashicorp.com/terraform/0.9.2/terraform_0.9.2_linux_amd64.zip && \
+    wget --no-verbose -O /root/terraform.zip https://releases.hashicorp.com/terraform/0.9.3/terraform_0.9.3_linux_amd64.zip && \
     unzip /root/terraform.zip -d /usr/local/bin && \
     wget --no-verbose -O /root/packer.zip https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip && \
     unzip /root/packer.zip -d /usr/local/bin && \
