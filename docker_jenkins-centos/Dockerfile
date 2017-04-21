@@ -2,8 +2,8 @@ FROM centos:7
 
 MAINTAINER Fernando Jose Pando <nando@hex7.com>
 
-RUN yum -y install openssl-devel python-devel java-1.7.0-openjdk which unzip wget epel-release kernel-headers kernel-devel && \
-    yum -y groupinstall 'Development Tools' && \
+RUN yum -y groupinstall 'Development Tools' && \
+    yum -y install libffi-devel openssl-devel python-devel java-1.8.0-openjdk which unzip wget epel-release kernel-headers kernel-devel && \
     wget --no-verbose -O /etc/yum.repos.d/virtualbox.repo http://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo && \
     wget --no-verbose -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo && \
     rpm -v --import https://jenkins-ci.org/redhat/jenkins-ci.org.key && \
