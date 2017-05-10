@@ -3,26 +3,40 @@ FROM centos:7
 MAINTAINER Fernando Jose Pando <nando@hex7.com>
 
 RUN yum -y groupinstall 'Development Tools' && \
-    yum -y install libffi-devel openssl-devel python-devel java-1.8.0-openjdk which unzip wget epel-release kernel-headers kernel-devel && \
-    wget --no-verbose -O /etc/yum.repos.d/virtualbox.repo http://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo && \
+    yum -y install libffi-devel openssl-devel python-devel which unzip wget epel-release kernel-headers kernel-devel
+
+ARG JAVA=1.8.0
+ARG TERRAFORM=0.9.4
+ARG VIRTUALBOX=5.1
+ARG PACKER=1.0.0
+ARG VAGRANT=1.9.3
+
+RUN wget --no-verbose -O install-docker.sh https://get.docker.com/ && \
+    bash install-docker.sh
+
+RUN wget --no-verbose https://releases.hashicorp.com/terraform/${TERRAFORM}/terraform_${TERRAFORM}_linux_amd64.zip && \
+    unzip terraform_${TERRAFORM}_linux_amd64.zip -d /usr/local/bin
+
+RUN wget --no-verbose https://releases.hashicorp.com/packer/${PACKER}/packer_${PACKER}_linux_amd64.zip && \
+    unzip packer_${PACKER}_linux_amd64.zip -d /usr/local/bin
+
+RUN wget --no-verbose https://bootstrap.pypa.io/get-pip.py && \
+    python get-pip.py && \
+    pip install awscli virtualenv ansible
+
+RUN wget --no-verbose -O /etc/yum.repos.d/virtualbox.repo http://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo && \
+    yum -y install VirtualBox-${VIRTUALBOX} && \
+    wget --no-verbose https://releases.hashicorp.com/vagrant/${VAGRANT}/vagrant_${VAGRANT}_x86_64.rpm && \
+    rpm -Uvh vagrant_${VAGRANT}_x86_64.rpm
+
+RUN yum -y install java-${JAVA}-openjdk && \
     wget --no-verbose -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo && \
     rpm -v --import https://jenkins-ci.org/redhat/jenkins-ci.org.key && \
-    yum -y install jenkins VirtualBox-5.1 && \
-    wget --no-verbose -O /root/terraform.zip https://releases.hashicorp.com/terraform/0.9.3/terraform_0.9.3_linux_amd64.zip && \
-    unzip /root/terraform.zip -d /usr/local/bin && \
-    wget --no-verbose -O /root/packer.zip https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip && \
-    unzip /root/packer.zip -d /usr/local/bin && \
-    wget --no-verbose -O /root/install-docker.sh https://get.docker.com/ && \
-    bash /root/install-docker.sh && \
-    wget --no-verbose -O /root/vagrant.rpm https://releases.hashicorp.com/vagrant/1.9.3/vagrant_1.9.3_x86_64.rpm && \
-    rpm -Uvh /root/vagrant.rpm && \
-    wget --no-verbose -O /root/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    python /root/get-pip.py && \
-    pip install awscli virtualenv ansible && \
-    usermod -aG vboxusers,docker jenkins && \
-    mkdir -m 0755 /nix && chown jenkins /nix && \
+    yum -y install jenkins && \
     chown -c jenkins /var/lib/jenkins && \
-    chsh -s /bin/bash jenkins
+    usermod -aG vboxusers,docker jenkins && \
+    chsh -s /bin/bash jenkins && \
+    mkdir -m 0755 /nix && chown jenkins /nix
 
 USER jenkins
 
