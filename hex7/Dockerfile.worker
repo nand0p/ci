@@ -1,6 +1,7 @@
 FROM python:buster
 
-RUN apt install docker
+RUN apt-get update
+RUN apt-get install docker -y
 RUN pip install buildbot-worker
 
 RUN mkdir -v bb-worker
