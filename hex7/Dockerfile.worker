@@ -1,0 +1,11 @@
+FROM python:buster
+
+RUN apt install docker
+RUN pip install buildbot-worker
+
+RUN mkdir -v bb-worker
+WORKDIR bb-worker
+RUN buildbot-worker create-worker worker 172.18.0.2 hex7-worker pass
+
+CMD ["twistd", "-n", "-l", "-", "-y", "/bb-worker/worker/buildbot.tac"]
+

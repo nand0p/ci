@@ -1,0 +1,11 @@
+FROM python:buster
+
+RUN pip install 'buildbot[bundle]'
+RUN mkdir -v /bb-master
+
+WORKDIR /bb-master
+RUN buildbot create-master master
+COPY master.cfg /bb-master/master/master.cfg
+RUN ls -la master
+
+CMD ["twistd", "-n", "-l", "-", "-y", "/bb-master/master/buildbot.tac"]
