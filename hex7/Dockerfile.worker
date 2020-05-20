@@ -1,8 +1,8 @@
 FROM python:buster
 
-RUN apt-get update
-RUN apt-get install docker -y
 RUN pip install buildbot-worker
+RUN curl -fsSL https://get.docker.com -o get-docker.sh
+RUN bash get-docker.sh
 
 RUN mkdir -v bb-worker
 WORKDIR bb-worker
