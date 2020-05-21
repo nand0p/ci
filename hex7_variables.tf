@@ -49,8 +49,8 @@ variable "route53_damnswank_com_zone" {
 locals {
   userdata = <<EOF
 #!/bin/bash
-touch /root/userdata.boot
-yum install docker git -y
+touch /root/.cloudinit
+yum install docker git htop python3-Cython python3-devel python3-libs python3-pip python3-setuptools -y
 usermod -aG docker ec2-user
 systemctl enable docker
 systemctl start docker
