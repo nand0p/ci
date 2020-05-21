@@ -70,12 +70,7 @@ resource "aws_instance" "hex7" {
     tags = {
         Name = var.tag_name
     }
-    #user_data = "touch /root/userdata.boot"
-    # yum install docker git
-    # systemctl enable docker
-    # git clone https://github.com/nand0p/ci.git
-    # usermod -aG docker ec2-user
-    
+    user_data_base64 = base64encode(local.userdata)
 }
 
 resource "aws_security_group" "hex7" {

@@ -45,3 +45,19 @@ variable "route53_damnswank_com_zone" {
   type    = string
   default = "Z8A9TY9K3WJ2R"
 }
+
+locals {
+  userdata = <<EOF
+#!/bin/bash
+touch /root/userdata.boot
+yum install docker git -y
+usermod -aG docker ec2-user
+systemctl enable docker
+systemctl start docker
+cd /root
+git clone https://github.com/nand0p/ci.git
+cd ci/hex7
+bash docker_run_master.sh
+bash docker_run_worker.sh
+EOF
+}
