@@ -1,10 +1,8 @@
 #!/bin/sh 
 
 
-if [ "$1" == "kill" ]; then
-  docker kill buildbot-hex7-worker
-fi
-
+docker kill buildbot-hex7-worker 2> /dev/null || true
+sleep 2
 
 docker build -t buildbot-hex7-worker -f Dockerfile.worker .
 docker run --rm \
