@@ -70,7 +70,7 @@ resource "aws_instance" "hex7" {
     tags = {
         Name = var.tag_name
     }
-    user_data_base64 = base64encode(local.userdata)
+    user_data = data.template_file.user_data.rendered
 }
 
 resource "aws_security_group" "hex7" {

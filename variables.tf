@@ -46,23 +46,9 @@ variable "route53_damnswank_com_zone" {
   default = "Z8A9TY9K3WJ2R"
 }
 
-locals {
-  userdata = <<EOF
-#!/bin/bash
-touch /root/.cloudinit
-yum install -y docker git htop python3-Cython python3-devel python3-libs python3-pip python3-setuptools
-amazon-linux-extras install nginx1.12 -y
-usermod -aG docker ec2-user
-systemctl enable docker
-systemctl start docker
-cd /root
-git clone https://github.com/nand0p/ci.git
-cd ci/hex7
-bash docker_run_master.sh
-bash docker_run_worker.sh
-cd /etc/nginx
-https://raw.githubusercontent.com/nand0p/ci/master/nginx.conf
-systemctl start nginx
-systemctl enable nginx
-EOF
+data "template_file" "user_data" {
+  template = file("user_data.tpl")
+  vars = {
+    buildbot_port = "8010"
+  }
 }

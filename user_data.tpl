@@ -1,3 +1,18 @@
+#!/bin/bash
+
+touch /root/.cloudinit
+yum install -y docker git htop python3-Cython python3-devel python3-libs python3-pip python3-setuptools
+amazon-linux-extras install nginx1.12 -y
+usermod -aG docker ec2-user
+systemctl enable docker
+systemctl start docker
+cd /root
+git clone https://github.com/nand0p/ci.git
+cd ci/hex7
+bash docker_run_master.sh
+bash docker_run_worker.sh
+
+cat <<EOF | tee /etc/nginx/nginx.conf
 user nginx;
 worker_processes auto;
 error_log /var/log/nginx/error.log;
@@ -8,11 +23,6 @@ events {
 }
 
 http {
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
-
-    access_log  /var/log/nginx/access.log  main;
     sendfile            on;
     tcp_nopush          on;
     tcp_nodelay         on;
@@ -56,7 +66,7 @@ http {
     server {
         listen       80;
         listen       [::]:80;
-        server_name  covid19.hex7.com covid.hex7.com www.covid19.hex7.com www.covid.hex7.com;
+        server_name  www.covid.hex7.com covid.hex7.com www.covid19.hex7.com covid19.hex7.com;
         root         /usr/share/nginx/html;
         location / {
             proxy_pass http://localhost:5000;
@@ -70,3 +80,7 @@ http {
     }
 
 }
+EOF
+
+systemctl start nginx
+systemctl enable nginx
