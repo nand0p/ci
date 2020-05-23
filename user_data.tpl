@@ -42,7 +42,6 @@ http {
         location / {
             proxy_pass                 http://localhost:8000;
             proxy_pass_request_headers on;
-            proxy_set_header           Forwarded $proxy_add_forwarded;
             proxy_set_header           X-Forwarded-For $proxy_add_x_forwarded_for;
         }
 
@@ -64,7 +63,6 @@ http {
         location / {
             proxy_pass                 http://localhost:8002;
             proxy_pass_request_headers on;
-            proxy_set_header           Forwarded $proxy_add_forwarded;
             proxy_set_header           X-Forwarded-For $proxy_add_x_forwarded_for;
         }
 
@@ -86,7 +84,6 @@ http {
         location / {
             proxy_pass                 http://localhost:8001;
             proxy_pass_request_headers on;
-            proxy_set_header           Forwarded $proxy_add_forwarded;
             proxy_set_header           X-Forwarded-For $proxy_add_x_forwarded_for;
         }
 
