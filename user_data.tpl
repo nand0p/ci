@@ -37,7 +37,8 @@ http {
         server_name  hex7.com;
         root         /usr/share/nginx/html;
         location / {
-            proxy_pass http://localhost:8000;
+            proxy_pass                      http://localhost:8000;
+            proxy_pass_request_headers      on;
         }
         error_page 404 /404.html;
             location = /40x.html {
@@ -53,7 +54,8 @@ http {
         server_name  damnswank.com www.damnswank.com;
         root         /usr/share/nginx/html;
         location / {
-            proxy_pass http://localhost:8002;
+            proxy_pass                      http://localhost:8002;
+            proxy_pass_request_headers      on;
         }
         error_page 404 /404.html;
             location = /40x.html {
@@ -69,7 +71,8 @@ http {
         server_name  www.covid.hex7.com covid.hex7.com www.covid19.hex7.com covid19.hex7.com;
         root         /usr/share/nginx/html;
         location / {
-            proxy_pass http://localhost:5000;
+            proxy_pass                      http://localhost:5000;
+            proxy_pass_request_headers      on;
         }
         error_page 404 /404.html;
             location = /40x.html {
