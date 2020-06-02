@@ -2,6 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
+
 resource "aws_vpc" "hex7" {
     cidr_block = var.cidr
     enable_dns_hostnames = true
@@ -10,12 +11,14 @@ resource "aws_vpc" "hex7" {
     }
 }
 
+
 resource "aws_internet_gateway" "hex7" {
     vpc_id = aws_vpc.hex7.id
     tags = {
         Name = var.tag_name
     }
 }
+
 
 resource "aws_subnet" "hex7" {
     vpc_id = aws_vpc.hex7.id
@@ -25,23 +28,24 @@ resource "aws_subnet" "hex7" {
     }
 }
 
+
 resource "aws_route_table" "hex7" {
     vpc_id = aws_vpc.hex7.id
-
     route {
         cidr_block = "0.0.0.0/0"
         gateway_id = aws_internet_gateway.hex7.id
     }
-
     tags = {
         Name = var.tag_name
     }
 }
 
+
 resource "aws_route_table_association" "hex7" {
     subnet_id = aws_subnet.hex7.id
     route_table_id = aws_route_table.hex7.id
 }
+
 
 resource "aws_eip" "hex7" {
     instance = aws_instance.hex7.id
@@ -51,6 +55,7 @@ resource "aws_eip" "hex7" {
     }
 }
 
+
 resource "aws_key_pair" "hex7" {
     key_name = var.tag_name
     public_key = var.ssh_pub_key
@@ -58,6 +63,7 @@ resource "aws_key_pair" "hex7" {
         Name = var.tag_name
     }
 }
+
 
 resource "aws_instance" "hex7" {
     ami = data.aws_ami.latest_amazon.id
@@ -67,11 +73,68 @@ resource "aws_instance" "hex7" {
     subnet_id = aws_subnet.hex7.id
     associate_public_ip_address = true
     source_dest_check = false
+    iam_instance_profile = aws_iam_instance_profile.hex7.name
+    user_data = data.template_file.bootstrap.rendered
+    lifecycle {
+      create_before_destroy = true
+    }
     tags = {
         Name = var.tag_name
     }
-    user_data = data.template_file.user_data.rendered
 }
+
+
+resource "aws_iam_instance_profile" "hex7" {
+  name = "hex7"
+  role = aws_iam_role.hex7.name
+}
+
+
+resource "aws_iam_role" "hex7" {
+  name = "hex7"
+  tags = {
+    Name = var.tag_name
+  }
+
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "sts:AssumeRole",
+            "Principal": {
+               "Service": "ec2.amazonaws.com"
+            },
+            "Effect": "Allow",
+            "Sid": ""
+        }
+    ]
+}
+EOF
+}
+
+
+resource "aws_iam_role_policy" "hex7" {
+  name = "hex7"
+  role = aws_iam_role.hex7.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:*",
+        "ssm:*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 
 resource "aws_security_group" "hex7" {
     name   = var.tag_name
@@ -88,6 +151,12 @@ resource "aws_security_group" "hex7" {
         protocol    = "tcp"
         cidr_blocks = [ "0.0.0.0/0" ]
     }
+    ingress {
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
+        cidr_blocks = [ "0.0.0.0/0" ]
+    }
     egress {
         from_port  = 0 
         to_port    = 0
@@ -99,6 +168,7 @@ resource "aws_security_group" "hex7" {
     }
 }
 
+
 resource "aws_route53_record" "hex7_com_root" {
   zone_id = var.route53_hex7_com_zone
   name    = "hex7.com."
@@ -106,6 +176,7 @@ resource "aws_route53_record" "hex7_com_root" {
   ttl     = "300"
   records = [ aws_eip.hex7.public_ip ]
 }
+
 
 resource "aws_route53_record" "hex7_com_catchall" {
   zone_id = var.route53_hex7_com_zone
@@ -115,6 +186,7 @@ resource "aws_route53_record" "hex7_com_catchall" {
   records = [ aws_eip.hex7.public_ip ]
 }
 
+
 resource "aws_route53_record" "hex7_net_root" {
   zone_id = var.route53_hex7_net_zone
   name    = "hex7.net."
@@ -122,6 +194,7 @@ resource "aws_route53_record" "hex7_net_root" {
   ttl     = "300"
   records = [ aws_eip.hex7.public_ip ]
 }
+
 
 resource "aws_route53_record" "hex7_net_catchall" {
   zone_id = var.route53_hex7_net_zone
@@ -131,6 +204,7 @@ resource "aws_route53_record" "hex7_net_catchall" {
   records = [ aws_eip.hex7.public_ip ]
 }
 
+
 resource "aws_route53_record" "hex7_damnswank_com_root" {
   zone_id = var.route53_damnswank_com_zone
   name    = "damnswank.com."
@@ -139,6 +213,7 @@ resource "aws_route53_record" "hex7_damnswank_com_root" {
   records = [ aws_eip.hex7.public_ip ]
 }
 
+
 resource "aws_route53_record" "hex7_damnswank_com_catchall" {
   zone_id = var.route53_damnswank_com_zone
   name    = "*.damnswank.com."
@@ -146,6 +221,7 @@ resource "aws_route53_record" "hex7_damnswank_com_catchall" {
   ttl     = "300"
   records = [ aws_eip.hex7.public_ip ]
 }
+
 
 output "hex7_eip" {
   value = aws_eip.hex7.public_ip

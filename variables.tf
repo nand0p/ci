@@ -46,8 +46,8 @@ variable "route53_damnswank_com_zone" {
   default = "Z8A9TY9K3WJ2R"
 }
 
-data "template_file" "user_data" {
-  template = file("user_data.tpl")
+data "template_file" "bootstrap" {
+  template = file("bootstrap.tpl")
   vars = {
     buildbot_port = "8010"
   }

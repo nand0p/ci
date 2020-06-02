@@ -1,12 +1,17 @@
 FROM python:buster
 
+ARG BUILDBOT_WORKER_USER
+ARG BUILDBOT_WORKER_PASS
+ARG BUILDBOT_WORKER_HOST
+
 RUN pip install buildbot-worker
 RUN curl -fsSL https://get.docker.com -o get-docker.sh
 RUN bash get-docker.sh
 
 RUN mkdir -v bb-worker
 WORKDIR bb-worker
-RUN buildbot-worker create-worker worker 172.18.0.2 hex7-worker pass
+RUN echo "buildbot-worker create-worker worker ${BUILDBOT_WORKER_HOST} ${BUILDBOT_WORKER_USER} ${BUILDBOT_WORKER_PASS}"
+RUN buildbot-worker create-worker worker ${BUILDBOT_WORKER_HOST} ${BUILDBOT_WORKER_USER} ${BUILDBOT_WORKER_PASS}
 
 CMD ["twistd", "-n", "-l", "-", "-y", "/bb-worker/worker/buildbot.tac"]
 
