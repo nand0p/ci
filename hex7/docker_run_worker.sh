@@ -6,9 +6,9 @@ sleep 2
 
 docker build -t buildbot-hex7-worker \
              -f Dockerfile.worker \
-	     --build-arg BUILDBOT_WORKER_USER=$(aws ssm get-parameter --name BUILDBOT_WORKER_USER --query Parameter.Value --output text) \
-	     --build-arg BUILDBOT_WORKER_PASS=$(aws ssm get-parameter --name BUILDBOT_WORKER_PASS --query Parameter.Value --output text) \
-	     --build-arg BUILDBOT_WORKER_HOST=$(aws ssm get-parameter --name BUILDBOT_WORKER_HOST --query Parameter.Value --output text) \
+	     --build-arg BUILDBOT_WORKER_USER=$(aws ssm get-parameter --region us-east-1 --name BUILDBOT_WORKER_USER --query Parameter.Value --output text) \
+	     --build-arg BUILDBOT_WORKER_PASS=$(aws ssm get-parameter --region us-east-1 --name BUILDBOT_WORKER_PASS --query Parameter.Value --output text) \
+	     --build-arg BUILDBOT_WORKER_HOST=$(aws ssm get-parameter --region us-east-1 --name BUILDBOT_WORKER_HOST --query Parameter.Value --output text) \
 	     .
 
 sleep 2
