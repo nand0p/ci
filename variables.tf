@@ -9,7 +9,7 @@ data "aws_ami" "latest_amazon" {
 
 variable "tag_name" {
   type    = string
-  default = "hex7-2020-05-20"
+  default = "hex7-2020-08-22"
 }
 
 variable "cidr" {
