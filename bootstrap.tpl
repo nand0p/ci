@@ -1,5 +1,14 @@
 #!/bin/bash -ex
 
+echo swap
+dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+mkswap /swapfile
+chmod 600 /swapfile
+echo "/swapfile    none    swap    sw    0    0" | tee -a /etc/fstab
+cat /etc/fstab
+swapon -a
+swapon --show
+
 echo packages
 yum install -y docker git htop python3-Cython python3-devel python3-libs python3-pip python3-setuptools mariadb-server
 
