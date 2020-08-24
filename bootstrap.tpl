@@ -1,13 +1,29 @@
 #!/bin/bash -ex
 
 echo swap
-dd if=/dev/zero of=/swapfile bs=1024 count=1048576
-mkswap /swapfile
+fallocate -l 2G /swapfile
 chmod 600 /swapfile
+mkswap /swapfile
 echo "/swapfile    none    swap    sw    0    0" | tee -a /etc/fstab
 cat /etc/fstab
 swapon -a
 swapon --show
+
+echo disable
+systemctl stop amazon-ssm-agent
+systemctl disable amazon-ssm-agent
+systemctl stop rpcbind
+systemctl disable rpcbind
+systemctl stop postfix
+systemctl disable postfix
+systemctl stop gssproxy
+systemctl disable gssproxy
+systemctl stop atd
+systemctl disable atd
+systemctl stop crond
+systemctl disable crond
+systemctl stop acpid
+systemctl disable acpid
 
 echo packages
 yum install -y docker git htop python3-Cython python3-devel python3-libs python3-pip python3-setuptools mariadb-server
