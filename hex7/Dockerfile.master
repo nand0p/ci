@@ -6,17 +6,15 @@ ENV AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY_ID}
 ENV AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY}
 
 RUN apt update
-RUN apt -y install mariadb-server mariadb-client
-RUN ls -la /var/lib/mysql
-RUN pip install 'buildbot[bundle]' mysqlclient boto3
+RUN pip install 'buildbot[bundle]' boto3
 RUN mkdir -vp /bb-master
 
 WORKDIR /bb-master
 RUN buildbot create-master master
 COPY master.cfg /bb-master/master/master.cfg
-RUN mkdir -pv /var/run/mysqld
-RUN ls -la /var/run/mysqld
-#RUN buildbot upgrade-master /bb-master/master
+COPY utils /bb-master/master/utils
 RUN ls -la master
+
+#RUN buildbot upgrade-master /bb-master/master
 
 CMD ["twistd", "-n", "-l", "-", "-y", "/bb-master/master/buildbot.tac"]

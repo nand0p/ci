@@ -28,10 +28,6 @@ systemctl disable acpid
 echo packages
 yum install -y docker git htop python3-Cython python3-devel python3-libs python3-pip python3-setuptools
 
-#echo mysql
-#yum install -y mariadb-server
-#systemctl start mariadb
-
 echo docker
 usermod -aG docker ec2-user
 systemctl enable docker
