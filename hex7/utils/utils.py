@@ -3,7 +3,8 @@ from buildbot.plugins import *
 
 def get_change_source(repo, branch, poll):
   workdir = repo + '-workdir'
-  return changes.GitPoller('https://github.com/nand0p/' + repo + '.git',
+  url = 'https://github.com/nand0p/' + repo + '.git'
+  return changes.GitPoller(url,
                            workdir=workdir,
                            branch=branch,
                            pollInterval=poll)
