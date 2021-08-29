@@ -2,24 +2,34 @@ data "aws_ami" "latest_amazon" {
   most_recent = true
   owners      = ["137112412989"]
   filter {
-      name   = "name"
-      values = ["amzn2-ami-hvm-*"]
+    name   = "name"
+    values = ["amzn2-ami-hvm-*"]
   }
 }
 
 variable "tag_name" {
   type    = string
-  default = "hex7-2020-08-24"
+  default = "hex7-2021-08-29"
 }
 
-variable "cidr" {
+variable "vpc_cidr" {
   type    = string
-  default = "192.168.107.0/24"
+  default = "192.168.108.0/23"
+}
+
+variable "subnet1_cidr" {
+  type    = string
+  default = "192.168.108.0/24"
+}
+
+variable "subnet2_cidr" {
+  type    = string
+  default = "192.168.109.0/24"
 }
 
 variable "instance_type" {
   type    = string
-  default = "t3.small"
+  default = "t3a.micro"
 }
 
 variable "ssh_pub_key" {
@@ -35,15 +45,25 @@ variable "route53_hex7_com_zone" {
   type    = string
   default = "Z2YZQHSWZVS6YV"
 }
- 
+
 variable "route53_hex7_net_zone" {
   type    = string
   default = "Z2JRDJ4NHF5DME"
 }
- 
+
 variable "route53_damnswank_com_zone" {
   type    = string
   default = "Z8A9TY9K3WJ2R"
+}
+
+variable "elb_certificate_arn" {
+  type    = string
+  default = "arn:aws:acm:us-east-1:082847268983:certificate/0953f084-b05b-4d32-a870-d5fa409c9104"
+}
+
+variable "elb_health_check" {
+  type    = string
+  default = "HTTPS:443/nginx-health"
 }
 
 data "template_file" "bootstrap" {
@@ -52,3 +72,4 @@ data "template_file" "bootstrap" {
     buildbot_port = "8010"
   }
 }
+

@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 echo swap
-fallocate -l 2G /swapfile
+fallocate -l 10G /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
 echo "/swapfile    none    swap    sw    0    0" | tee -a /etc/fstab
@@ -43,8 +43,17 @@ bash docker_run_worker.sh
 echo nginx
 amazon-linux-extras install nginx1.12 -y
 wget -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/nand0p/ci/master/nginx.conf
+wget -O /usr/share/nginx/html/50x.html https://raw.githubusercontent.com/nand0p/ci/master/50x.html
+wget -O /usr/share/nginx/html/404.html https://raw.githubusercontent.com/nand0p/ci/master/404.html
+
 chmod -c 750 /var/log/nginx
+
+echo get secrets
+mkdir -pv /etc/nginx/ssl
+aws ssm get-parameter --region us-east-1 --name HEX7_KEY --with-decryption --query Parameter.Value --output text | tee /etc/nginx/ssl/hex7.com.key
+aws ssm get-parameter --region us-east-1 --name HEX7_CRT --with-decryption --query Parameter.Value --output text | tee /etc/nginx/ssl/hex7.com.crt
+
 systemctl start nginx
 systemctl enable nginx
-
+ 
 touch /root/.cloudinit.success
