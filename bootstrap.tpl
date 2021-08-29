@@ -36,7 +36,7 @@ systemctl start docker
 echo buildbot
 cd /root
 git clone https://github.com/nand0p/ci.git
-cd ci/hex7
+cd ci/buildbot
 bash docker_run_master.sh
 bash docker_run_worker.sh
 
@@ -52,6 +52,13 @@ echo get secrets
 mkdir -pv /etc/nginx/ssl
 aws ssm get-parameter --region us-east-1 --name HEX7_KEY --with-decryption --query Parameter.Value --output text | tee /etc/nginx/ssl/hex7.com.key
 aws ssm get-parameter --region us-east-1 --name HEX7_CRT --with-decryption --query Parameter.Value --output text | tee /etc/nginx/ssl/hex7.com.crt
+
+openssl verify /etc/nginx/ssl/hex7.com.crt
+openssl x509 -noout -modulus -in /etc/nginx/ssl/hex7.com.crt | openssl md5
+openssl rsa -noout -modulus -in /etc/nginx/ssl/hex7.com.key | openssl md5
+openssl x509 -noout -in /etc/nginx/ssl/hex7.com.crt -dates
+openssl x509 -in /etc/nginx/ssl/hex7.com.crt -noout -pubkey
+openssl rsa -in /etc/nginx/ssl/hex7.com.key -pubout
 
 systemctl start nginx
 systemctl enable nginx
