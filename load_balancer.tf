@@ -1,7 +1,7 @@
 resource "aws_elb" "hex7" {
   name            = "hex7-frontend-elb"
   subnets         = [aws_subnet.hex7.id, aws_subnet.hex7_secondary.id]
-  security_groups = [aws_security_group.hex7.id]
+  security_groups = [aws_security_group.hex7_elb.id]
 
   access_logs {
     bucket        = aws_s3_bucket.elb_logs.bucket
@@ -13,7 +13,7 @@ resource "aws_elb" "hex7" {
     instance_protocol  = "https"
     lb_port            = 443
     lb_protocol        = "https"
-    ssl_certificate_id = var.elb_certificate_arn
+    ssl_certificate_id = aws_acm_certificate.hex7.id
   }
 
   health_check {
@@ -32,7 +32,7 @@ resource "aws_elb" "hex7" {
 
   tags = {
     Name = "hex7-terraform-elb"
-    Cert = var.elb_certificate_arn
+    Cert = aws_acm_certificate.hex7.id
   }
 }
 

@@ -56,9 +56,9 @@ variable "route53_damnswank_com_zone" {
   default = "Z8A9TY9K3WJ2R"
 }
 
-variable "elb_certificate_arn" {
+variable "route53_nomadic_red_zone" {
   type    = string
-  default = "arn:aws:acm:us-east-1:082847268983:certificate/0953f084-b05b-4d32-a870-d5fa409c9104"
+  default = "Z00565411O4LUODSIUATX"
 }
 
 variable "elb_health_check" {
