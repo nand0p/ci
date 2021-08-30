@@ -29,13 +29,8 @@ resource "aws_route53_record" "hex7_damnswank_com_root" {
   zone_id = var.route53_damnswank_com_zone
   name    = "damnswank.com."
   type    = "A"
-  alias  {
-    zone_id = aws_elb.hex7.zone_id
-    name = aws_elb.hex7.dns_name
-    evaluate_target_health = false
-  }
-  #ttl     = "300"
-  #records = [aws_eip.hex7.public_ip]
+  ttl     = "300"
+  records = [aws_eip.hex7.public_ip]
 }
 
 
@@ -73,12 +68,35 @@ resource "aws_route53_record" "hex7_buildbot" {
 
 resource "aws_route53_record" "nomadic_www" {
   zone_id = var.route53_nomadic_red_zone
-  name    = "www.nomadic.red."
+  name    = "dev.nomadic.red."
   type    = "A"
   ttl     = "300"
   records = [aws_eip.hex7.public_ip]
 }
 
+resource "aws_route53_record" "reart" {
+  zone_id = var.route53_hex7_com_zone
+  name    = "reart.hex7.com."
+  type    = "A"
+  ttl     = "300"
+  records = [aws_eip.hex7.public_ip]
+}
+
+resource "aws_route53_record" "reimage" {
+  zone_id = var.route53_hex7_com_zone
+  name    = "reimage.hex7.com."
+  type    = "A"
+  ttl     = "300"
+  records = [aws_eip.hex7.public_ip]
+}
+
+resource "aws_route53_record" "hubble" {
+  zone_id = var.route53_hex7_com_zone
+  name    = "hubble.hex7.com."
+  type    = "A"
+  ttl     = "300"
+  records = [aws_eip.hex7.public_ip]
+}
 
 resource "aws_route53_record" "hex7_com_catchall" {
   zone_id = var.route53_hex7_com_zone
@@ -101,9 +119,9 @@ resource "aws_route53_record" "hex7_net_catchall" {
 resource "aws_route53_record" "hex7_damnswank_com_catchall" {
   zone_id = var.route53_damnswank_com_zone
   name    = "*.damnswank.com."
-  type    = "CNAME"
+  type    = "A"
   ttl     = "300"
-  records = [aws_elb.hex7.dns_name]
+  records = [aws_eip.hex7.public_ip]
 }
 
 
