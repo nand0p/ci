@@ -66,9 +66,18 @@ resource "aws_route53_record" "hex7_buildbot" {
 }
 
 
-resource "aws_route53_record" "nomadic_www" {
+resource "aws_route53_record" "nomadic_dev" {
   zone_id = var.route53_nomadic_red_zone
   name    = "dev.nomadic.red."
+  type    = "A"
+  ttl     = "300"
+  records = [aws_eip.hex7.public_ip]
+}
+
+
+resource "aws_route53_record" "hex7_dev" {
+  zone_id = var.route53_hex7_com_zone
+  name    = "dev.hex7.com."
   type    = "A"
   ttl     = "300"
   records = [aws_eip.hex7.public_ip]
