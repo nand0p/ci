@@ -1,7 +1,9 @@
 resource "aws_elb" "hex7" {
+  count = var.load_balancer_enable ? 1 : 0
+
   name            = "hex7-frontend-elb"
-  subnets         = [aws_subnet.hex7.id, aws_subnet.hex7_secondary.id]
-  security_groups = [aws_security_group.hex7_elb.id]
+  subnets         = [aws_subnet.hex7.id, aws_subnet.hex7_secondary[0].id]
+  security_groups = [aws_security_group.hex7_elb[0].id]
 
   access_logs {
     bucket        = aws_s3_bucket.elb_logs.bucket
@@ -31,8 +33,9 @@ resource "aws_elb" "hex7" {
   connection_draining_timeout = 400
 
   tags = {
-    Name = "hex7-terraform-elb"
+    Name = "${var.tag_name}-frontend"
     Cert = aws_acm_certificate.hex7.id
+    
   }
 }
 

@@ -9,7 +9,7 @@ data "aws_ami" "latest_amazon" {
 
 variable "tag_name" {
   type    = string
-  default = "hex7-2021-08-29"
+  default = "hex7-2021-09-12"
 }
 
 variable "vpc_cidr" {
@@ -66,10 +66,12 @@ variable "elb_health_check" {
   default = "HTTPS:443/nginx-health"
 }
 
-data "template_file" "bootstrap" {
-  template = file("bootstrap.tpl")
-  vars = {
-    buildbot_port = "8010"
-  }
+variable "load_balancer_enable" {
+  type    = bool
+  default = true
 }
 
+variable "buildbot_port" {
+  type    = string
+  default = "8010"
+}

@@ -81,6 +81,8 @@ resource "aws_security_group" "hex7" {
 
 
 resource "aws_security_group" "hex7_elb" {
+  count = var.load_balancer_enable ? 1 : 0
+
   name   = "{var.tag_name}_elb"
   vpc_id = aws_vpc.hex7.id
   ingress {

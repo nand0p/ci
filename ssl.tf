@@ -1,11 +1,13 @@
 resource "aws_acm_certificate" "hex7" {
-  domain_name       = "hex7.com"
-  validation_method = "DNS"
-  subject_alternative_names = [ "*.hex7.com",
-                                "hex7.net",
-                                "*.hex7.net",
-                                "nomadic.red",
-                                "*.nomadic.red" ]
+  domain_name               = "hex7.com"
+  validation_method         = "DNS"
+  subject_alternative_names = [
+    "*.hex7.com",
+    "hex7.net",
+    "*.hex7.net",
+    "nomadic.red",
+    "*.nomadic.red"
+  ]
   tags = {
     Environment = "prod"
   }
