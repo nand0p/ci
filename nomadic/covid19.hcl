@@ -11,7 +11,7 @@ job "covid19" {
   update {
     stagger          = "1s"
     max_parallel     = 3
-    min_healthy_time = "1s"
+    min_healthy_time = "5s"
     healthy_deadline = "10s"
   }
 
@@ -53,7 +53,7 @@ job "covid19" {
 
       resources {
         cpu    = 20
-        memory = 150
+        memory = 400
       }
 
       logs {
