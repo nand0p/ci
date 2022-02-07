@@ -53,7 +53,7 @@ job "nomadic" {
 
       resources {
         cpu    = 20
-        memory = 12
+        memory = 100
       }
 
       logs {

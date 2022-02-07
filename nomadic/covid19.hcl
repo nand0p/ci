@@ -53,7 +53,7 @@ job "covid19" {
 
       resources {
         cpu    = 20
-        memory = 12
+        memory = 150
       }
 
       logs {
