@@ -55,7 +55,7 @@ job "reimage" {
 
       resources {
         cpu    = 10
-        memory = 10
+        memory = 200
       }
 
       logs {
