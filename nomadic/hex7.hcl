@@ -62,7 +62,7 @@ job "hex7" {
 
       resources {
         cpu    = 10
-        memory = 200
+        memory = 300
       }
 
       logs {
